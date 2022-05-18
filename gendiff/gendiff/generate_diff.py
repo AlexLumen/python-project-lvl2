@@ -55,10 +55,10 @@ def generate_diff(file1, file2):
     return diff
 
 
-file_path_1 = yaml.load(open('../../fixtures/file1.yaml'))
-file_path_2 = yaml.load(open('../../fixtures/file2.yaml'))
-print(type(file_path_1))
-print(type(file_path_2))
+#file_path_1 = yaml.load(open('../../fixtures/file1.yaml'))
+#file_path_2 = yaml.load(open('../../fixtures/file2.yaml'))
+#print(type(file_path_1))
+#print(type(file_path_2))
 
-print(generate_diff(file_path_1, file_path_2))
-print(type(generate_diff(file_path_1, file_path_2)))
+#print(generate_diff(file_path_1, file_path_2))
+#print(type(generate_diff(file_path_1, file_path_2)))

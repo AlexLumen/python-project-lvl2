@@ -1,0 +1,4 @@
+Property 'added' was added with value: null
+Property 'removed' was removed
+Property 'status' was removed
+Property 'updated' was updated. From 'value' to 'updated_value'

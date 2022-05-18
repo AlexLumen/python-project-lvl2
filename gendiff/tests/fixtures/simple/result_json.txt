@@ -1,0 +1,1 @@
+{"unchanged": {"status": "unchanged", "value": "123"}, "updated": {"status": "updated", "value": value, "updated_value": updated_value}, "status": {"status": "removed", "value": "123.234.53.22"}, "removed": {"status": "removed", "value": false}, "added": {"status": "added", "value": null}}
