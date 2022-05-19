@@ -1,7 +1,7 @@
 """Generate diff function."""
-import json
+#import json
 
-import yaml
+#import yaml
 
 
 def generate_diff(file1, file2):
