@@ -1,11 +1,7 @@
+all: install
+
 install:
-	poetry install
-
-build:
-	poetry build
-
-publish:
-	poetry publish --dry-run
+	@poetry install
 
 package-install:
 	py -m pip install dist/werewolf_gendiff-0.1.0-py3-none-any.whl
