@@ -1,64 +1,74 @@
 """Generate diff function."""
-#import json
-
-#import yaml
 
 
-def generate_diff(file1, file2):
+def json_to_text(data):
     """
-    Вычислитель отличий файлов JSON.
-    На вход передаются пути к файлам JSON
-    file1: file path,
-    file2: file path,
-    Return difference
+    Переводит json в текст
+    data: is data
     """
-    diff_dict = {}
-
-    if file1 is None and file2 is None:
-        return '{\n\n}'
-
-    elif file1 == {} or file1 is None:
-        print(type(file1))
-        for key, val in file2.items():
-            key = '+ ' + key
-            diff_dict.setdefault(key, val)
-    elif file2 == {} or file2 is None:
-        for key, val in file1.items():
-            key = '- ' + key
-            diff_dict.setdefault(key, val)
-
-    else:
-        for key, value in file1.items():
-            for k, v in file2.items():
-                if key == k:
-                    if value != v:
-                        new_key = '- ' + key
-                        diff_dict.setdefault(new_key, value)
-                        new_key = '+ ' + key
-                        value = v
-                        diff_dict.setdefault(new_key, value)
-                    else:
-                        new_key = '  ' + key
-                        diff_dict.setdefault(new_key, value)
-                if key not in file2:
-                    key = '- ' + key
-                    diff_dict.setdefault(key, value)
-                    break
-                if k not in file1:
-                    k = ' + ' + k
-                    diff_dict.setdefault(k, v)
-    diff = str(diff_dict).replace("'", '')
-    diff = diff.replace('{', '{\n')
+    diff = str(data).replace("'", '')
+    diff = diff.replace('{', '{\n ')
     diff = diff.replace('}', '\n}')
     diff = diff.replace(',', '\n')
-
     return diff
 
 
-#file_path_1 = yaml.load(open('../../fixtures/file1.yaml'))
-#file_path_2 = yaml.load(open('../../fixtures/file2.yaml'))
-#print(type(file_path_1))
-#print(type(file_path_2))
+def do_if_one_file_empty(data1, data2):
+    """
+    Возвращает разницу файлов, если один из файлов содержит пустой словарь
+    На вход передаются пути к файлам JSON
+    data1: file path,
+    data2: file path
+    return: diff
+    """
+    result = {}
+    if data1 == {} or data1 is None:
+        for key, value in data2.items():
+            key = '+ ' + key
+            result.setdefault(key, value)
+        diff = json_to_text(result)
+        return diff
+    elif data2 == {} or data2 is None:
+        for key, value in data1.items():
+            key = '- ' + key
+            result.setdefault(key, value)
+        diff = json_to_text(result)
+        return diff
 
-#print(generate_diff(file_path_1, file_path_2))
-#print(type(generate_diff(file_path_1, file_path_2)))
+
+def generate_diff(data1, data2):
+    """
+    Вычислитель отличий файлов JSON.
+    На вход передаются пути к файлам JSON
+    data1: file path,
+    data2: file path,
+    Return difference
+    """
+    result = {}
+    if (data1 == {}) or (data2 == {}):
+        return do_if_one_file_empty(data1, data2)
+    elif (data1 is None) or (data2 is None):
+        return do_if_one_file_empty(data1, data2)
+    keys = sorted(data1.keys() | data2.keys())
+    for key in keys:
+        if key not in data1:
+            value = data2[key]
+            key = f'+ {key}'
+            result.setdefault(key, value)
+        elif key not in data2:
+            value = data1[key]
+            key = f'- {key}'
+            result.setdefault(key, value)
+        elif data1[key] == data2[key]:
+            value = data1[key]
+            key = f'  {key}'
+            result.setdefault(key, value)
+        else:
+            value1 = data1[key]
+            key1 = f'- {key}'
+            result.setdefault(key1, value1)
+            key2 = f'+ {key}'
+            value2 = data2[key]
+            result.setdefault(key2, value2)
+    diff = json_to_text(result)
+    return diff
